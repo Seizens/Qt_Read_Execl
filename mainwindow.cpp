@@ -30,6 +30,11 @@ void MainWindow::xlsx_reader()
     CellRect index2 = xlsxReader->get_value_index_from_row("value_name_7");
     sprintf(temp, "2. col is %d, row is %d", index2.col, index2.row);
     __print(temp);
+    QString inputValue = "value_name_3";
+    QString outputValue = "value_name_1";
+    QStringList otherValueList;
+    otherValueList<<"value_name_4"<<"value_name_5";
+    xlsxReader->set_work_reader_config(inputValue, outputValue, otherValueList);
 }
 
 void MainWindow::init_view()
@@ -47,7 +52,7 @@ void MainWindow::init_view()
 void MainWindow::select_execl()
 {
     QString filename;
-    filename = QFileDialog::getOpenFileName(this, tr("选择Execl文件"), tr("/home/books/"), tr(""));
+    filename = QFileDialog::getOpenFileName(this, tr("选择Execl文件"), tr("/home/books/"), tr("*.xlsx"));
     if (filename.isEmpty()){
         __print(tr("no select file"));
         return;

@@ -23,7 +23,7 @@ struct TracesValue{
 struct PdeTraces{
     int address;
     QString name;
-    TracesValue values[5];
+    QList<TracesValue> values;
 };
 
 

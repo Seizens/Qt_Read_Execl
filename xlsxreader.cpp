@@ -26,6 +26,7 @@ void XlsxReader::init_data()
     this->firstRow = 0;
     this->lastCol = 0;
     this->lastRow = 0;
+    this->init_work_data();
 }
 
 void XlsxReader::init_execl()
@@ -64,7 +65,7 @@ void XlsxReader::get_current_sheet(unsigned int index)
 {
 
     this->workSheet = static_cast<QXlsx::Worksheet*>(this->workBook->sheet(index));
-    this->get_work_sheet_col_row();
+    this->get_current_sheet_col_row();
 
 #ifdef DEBUG_PRINT
     this->display_current_sheet_values();
@@ -83,18 +84,8 @@ void XlsxReader::get_current_sheet(QString sheetname)
     }
 }
 
-void XlsxReader::test_func()
-{
-//    QXlsx::Document xlsx(this->fileName);
-//    this->workBook = xlsx.workbook();
-//    QXlsx::Worksheet *temp_sheet = static_cast<QXlsx::Worksheet*>(this->workBook->sheet(0));
-//    unsigned int temp_col = temp_sheet->dimension().columnCount();
 
-}
-
-
-
-void XlsxReader::get_work_sheet_col_row()
+void XlsxReader::get_current_sheet_col_row()
 {
     if (this->workSheet == NULL){
         __print(QObject::tr("Pls select worksheet !!!"));
@@ -172,3 +163,73 @@ bool XlsxReader::compare_cell_value(QString value, QXlsx::Cell *cell)
 //    }
     return false;
 }
+
+void XlsxReader::init_work_data()
+{
+    this->inputValue.clear();
+    this->outputValue.clear();
+    this->otherValueList.clear();
+    this->otherRectList.clear();
+    this->workRow = -1;
+}
+
+void XlsxReader::set_work_reader_config(QString inputValue, QString outputValue, QStringList otherValueList)
+{
+    this->init_work_data();
+    this->inputValue = inputValue;
+    this->outputValue = outputValue;
+    this->otherValueList = otherValueList;
+    this->get_work_first_row();
+}
+
+void XlsxReader::get_work_first_row()
+{
+    this->inputRect = this->get_value_index_from_row(this->inputValue);
+    int row = this->inputRect.row;
+    this->outputRect = this->get_value_index_from_row(this->outputValue);
+    if (row != this->outputRect.row){
+        return;
+    }
+
+    int size = this->otherValueList.size();
+    for (int i=0;i<size; i++){
+        CellRect tempRect = this->get_value_index_from_row(this->otherValueList[i]);
+        this->otherRectList.append(tempRect);
+       if (row != tempRect.row){
+           return;
+       }
+    }
+    this->workRow = row;
+
+#ifdef DEBUG_PRINT
+    sprintf(temp, "work row is %d", this->workRow);
+    __print(temp);
+#endif //DEBUG_PRINT
+
+}
+
+int XlsxReader::search_by_value(QString inputValue){
+    unsigned int inputCol = this->inputRect.col;
+    for(unsigned int i= this->workRow; i< this->rowCount; i++){
+        QXlsx::Cell *cell = this->workSheet->cellAt(i, inputCol);
+        if (cell == NULL) continue;
+        if(QString::compare(cell->value().toString(), inputValue)==0){
+
+        }
+    }
+}
+
+void XlsxReader::get_all_struct_info()
+{
+    if (this->workRow == -1){
+        __print("PlS set work config !!!");
+        return;
+    }
+//    for(int i=this->workRow; i<this->rowCount; i++){
+
+//    }
+}
+
+
+
+
