@@ -3,6 +3,7 @@
 
 #include <QtXlsx>
 #include "comm.h"
+#include "xlsxstruct.h"
 
 #define DEBUG_PRINT
 
@@ -26,7 +27,11 @@ public:
     void init_execl();
     void get_current_sheet(unsigned int index);
     void get_current_sheet(QString sheetname);
-    int get_first_row_for_value(QString value);
+    CellRect get_value_index_from_row(QString value);
+    CellRect get_value_index_from_col(QString value);
+    bool compare_cell_value(QString value, QXlsx::Cell *cell);
+
+    void set_sheet_reader_config(QString inputValue, QString outputValue, QStringList otherValueList);
 
 private:
     char temp[200];

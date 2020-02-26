@@ -20,6 +20,8 @@ public:
     void init_view();
     QAction *openAction;
 
+    void xlsx_reader();
+
 private:
     Ui::MainWindow *ui;
 

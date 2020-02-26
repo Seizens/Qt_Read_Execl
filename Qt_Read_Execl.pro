@@ -26,7 +26,8 @@ SOURCES += \
 HEADERS += \
     comm.h \
     mainwindow.h \
-    xlsxreader.h
+    xlsxreader.h \
+    xlsxstruct.h
 
 FORMS += \
     mainwindow.ui

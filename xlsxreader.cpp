@@ -97,7 +97,7 @@ void XlsxReader::test_func()
 void XlsxReader::get_work_sheet_col_row()
 {
     if (this->workSheet == NULL){
-        __print(QObject::tr("Pls select which worksheet !!!"));
+        __print(QObject::tr("Pls select worksheet !!!"));
         return;
     }
     this->rowCount = this->workSheet->dimension().rowCount();
@@ -121,20 +121,54 @@ void XlsxReader::get_work_sheet_col_row()
 
 }
 
-int XlsxReader::get_first_row_for_value(QString value)
+CellRect XlsxReader::get_value_index_from_row(QString value)
 {
+    CellRect index;
     if (this->workSheet == NULL){
         __print(QObject::tr("Pls select which worksheet !!!"));
-        return -1;
+        return index;
+    }
+    for (unsigned int i = this->firstRow; i< this->rowCount; i++){
+        for(unsigned int j = this->firstCol; j< this->colCount; j++){
+            if (this->compare_cell_value(value, this->workSheet->cellAt(i, j)) == true){
+                index.col = j;
+                index.row = i;
+                return index;
+            }
+        }
+    }
+    __print("not find");
+    return index;
+}
+
+CellRect XlsxReader::get_value_index_from_col(QString value)
+{
+    CellRect index;
+    if (this->workSheet == NULL){
+        __print(QObject::tr("Pls select which worksheet !!!"));
+        return index;
     }
     for (unsigned int i = this->firstCol; i< this->colCount; i++){
         for(unsigned int j = this->firstRow; j< this->rowCount; j++){
-            QXlsx::Cell *cell = this->workSheet->cellAt(j, i);
-            if(cell == NULL) continue;
-
-#ifdef DEBUG_PRINT
-            sprintf(temp, "Col is %d, Row is %d, Value is %s", i, j, cell->value().toString().toUtf8().data());
-#endif //DEBUG_PRINT
+            if (this->compare_cell_value(value, this->workSheet->cellAt(j, i)) == true){
+                index.col = i;
+                index.row = j;
+                return index;
+            }
         }
     }
+    __print("not find");
+    return  index;
+}
+
+bool XlsxReader::compare_cell_value(QString value, QXlsx::Cell *cell)
+{
+    if(cell == NULL) return false;
+//    if (cell->isRichString()){
+        QString temp_value = cell->value().toString();
+        if (QString::compare(temp_value, value) == 0){
+            return true;
+        }
+//    }
+    return false;
 }
