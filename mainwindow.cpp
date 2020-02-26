@@ -35,6 +35,9 @@ void MainWindow::xlsx_reader()
     QStringList otherValueList;
     otherValueList<<"value_name_4"<<"value_name_5";
     xlsxReader->set_work_reader_config(inputValue, outputValue, otherValueList);
+    PdeTraces value;
+    xlsxReader->search_by_value("0x00003", &value);
+    __print(value.name);
 }
 
 void MainWindow::init_view()

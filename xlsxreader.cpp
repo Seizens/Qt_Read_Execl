@@ -208,15 +208,42 @@ void XlsxReader::get_work_first_row()
 
 }
 
-int XlsxReader::search_by_value(QString inputValue){
+int XlsxReader::search_by_value(QString inputValue, PdeTraces *pdeTraces){
     unsigned int inputCol = this->inputRect.col;
-    for(unsigned int i= this->workRow; i< this->rowCount; i++){
+    unsigned int matchRow = 0;
+    int res = -1;
+    PdeTraces valueTraces;
+    for(unsigned int i= this->workRow+1; i< this->rowCount; i++){
         QXlsx::Cell *cell = this->workSheet->cellAt(i, inputCol);
         if (cell == NULL) continue;
         if(QString::compare(cell->value().toString(), inputValue)==0){
-
+              valueTraces.name = this->workSheet->cellAt(i, this->outputRect.col)->value().toString();
+              valueTraces.address = cell->value().toInt();
+              valueTraces.values.append(this->get_single_value(i));
+              matchRow = i;
+              res = 0;
+              break;
         }
     }
+    if (res  == 0){
+        for(unsigned int i= matchRow+1; i< this->rowCount; i++){
+            QXlsx::Cell *cell = this->workSheet->cellAt(i, inputCol);
+            if (cell != NULL){
+                break;
+            }
+            valueTraces.values.append(this->get_single_value(i));
+        }
+        pdeTraces = &valueTraces;
+    }
+    return res;
+}
+
+TracesValue XlsxReader::get_single_value(unsigned int row)
+{
+    TracesValue value;
+    value.value_1 = this->workSheet->cellAt(row, this->otherRectList[0].col)->value().toString();
+    value.value_2 = this->workSheet->cellAt(row, this->otherRectList[1].col)->value().toString();
+    return value;
 }
 
 void XlsxReader::get_all_struct_info()

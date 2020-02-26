@@ -43,7 +43,8 @@ public:
 
     void set_work_reader_config(QString inputValue, QString outputValue, QStringList otherValueList);
     void get_work_first_row();
-    int search_by_value(QString inputValue);
+    int search_by_value(QString inputValue, PdeTraces *pdeTraces);
+    TracesValue get_single_value(unsigned int row);
 
 private:
     char temp[200];
