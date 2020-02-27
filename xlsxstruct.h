@@ -21,7 +21,7 @@ struct TracesValue{
 };
 
 struct PdeTraces{
-    int address;
+    QString address;
     QString name;
     QList<TracesValue> values;
 };

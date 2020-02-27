@@ -218,7 +218,7 @@ int XlsxReader::search_by_value(QString inputValue, PdeTraces *pdeTraces){
         if (cell == NULL) continue;
         if(QString::compare(cell->value().toString(), inputValue)==0){
               valueTraces.name = this->workSheet->cellAt(i, this->outputRect.col)->value().toString();
-              valueTraces.address = cell->value().toInt();
+              valueTraces.address = cell->value().toString();
               valueTraces.values.append(this->get_single_value(i));
               matchRow = i;
               res = 0;
@@ -233,7 +233,7 @@ int XlsxReader::search_by_value(QString inputValue, PdeTraces *pdeTraces){
             }
             valueTraces.values.append(this->get_single_value(i));
         }
-        pdeTraces = &valueTraces;
+        *pdeTraces = valueTraces;
     }
     return res;
 }
