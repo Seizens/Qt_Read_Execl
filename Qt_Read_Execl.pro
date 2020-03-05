@@ -24,6 +24,7 @@ SOURCES += \
     xlsxreader.cpp
 
 HEADERS += \
+    Die_Node.h \
     comm.h \
     mainwindow.h \
     xlsxreader.h \

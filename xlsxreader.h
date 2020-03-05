@@ -5,7 +5,7 @@
 #include "comm.h"
 #include "xlsxstruct.h"
 
-#define DEBUG_PRINT
+
 
 
 class XlsxReader

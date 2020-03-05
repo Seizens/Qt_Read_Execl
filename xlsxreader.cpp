@@ -1,5 +1,6 @@
 #include "xlsxreader.h"
 #include <QObject>
+#include <vector>
 
 XlsxReader::XlsxReader(QString filename)
 {
@@ -225,7 +226,7 @@ int XlsxReader::search_by_value(QString inputValue, PdeTraces *pdeTraces){
               break;
         }
     }
-    if (res  == 0){
+    if (res == 0){
         for(unsigned int i= matchRow+1; i< this->rowCount; i++){
             QXlsx::Cell *cell = this->workSheet->cellAt(i, inputCol);
             if (cell != NULL){

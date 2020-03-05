@@ -5,6 +5,9 @@
 #include <QAction>
 #include "comm.h"
 #include "xlsxreader.h"
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+#include "Die_Node.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,10 +20,16 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    QTreeWidget *header_tree;
     void init_view();
     QAction *openAction;
 
     void xlsx_reader();
+    void vector_reader();
+    void Die_info(Die_node *node);
+    void print_value(unsigned int inaddr, char *type_name, unsigned int bytesize, QTreeWidgetItem *item);
+    void handle_base(Die_node *node, unsigned int baseaddr, QTreeWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;
