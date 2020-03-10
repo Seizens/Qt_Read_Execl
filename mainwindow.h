@@ -28,11 +28,20 @@ public:
     void xlsx_reader();
     void vector_reader();
     void Die_info(Die_node *node);
-    void print_value(unsigned int inaddr, char *type_name, unsigned int bytesize, QTreeWidgetItem *item);
-    void handle_base(Die_node *node, unsigned int baseaddr, QTreeWidgetItem *item);
+    void print_value(unsigned int inaddr, char *type_name, unsigned int bytesize, QTreeWidgetItem *item,\
+                     unsigned int core_id, unsigned int thread_id);
+    void handle_base(Die_node *node, unsigned int baseaddr, QTreeWidgetItem *item, \
+                     unsigned int core_id, unsigned int thread_id);
+    void handle_vector(unsigned int baseaddr, QTreeWidgetItem *item, \
+                        Vector_Plural_node *vp_node, unsigned int core_id, unsigned int thread_id);
+    void handle_plural(unsigned int baseaddr, QTreeWidgetItem *item, \
+                       Vector_Plural_node *vp_node , unsigned int core_id, unsigned int thread_id);
+    void print_vector_base(unsigned int inaddr, char *type_name, unsigned int base_size, char *base_name ,\
+                           QTreeWidgetItem *item, unsigned int core_id, unsigned int thread_id);
 
 private:
     Ui::MainWindow *ui;
+    char temp[200];
 
 private slots:
     void select_execl();
